@@ -663,7 +663,7 @@
       </div>
       <div class="notice">Your data is collected only for research purposes. Analyses will be anonymized before being evaluated by other participants.</div>
       <div class="btn-row">
-        <button class="btn btn-primary" onclick="goToStage(1)">Start Study →</button>
+        <button class="btn btn-primary" id="startBtn" onclick="goToStage(1)" disabled>Start Study →</button>
       </div>
     </div>
   </div>
@@ -840,6 +840,21 @@ Rules for suggestions:
 let chatHistory = [];
 let isTyping = false;
 let currentStage = 0;
+
+function checkStartBtn() {
+  const major = document.getElementById('major').value.trim();
+  const year = document.getElementById('year').value;
+  const ai = document.getElementById('aiFamiliarity').value;
+  const policy = document.getElementById('policyAttitude').value;
+  document.getElementById('startBtn').disabled = !(major && year && ai && policy);
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  ['major', 'year', 'aiFamiliarity', 'policyAttitude'].forEach(id => {
+    document.getElementById(id).addEventListener('change', checkStartBtn);
+    document.getElementById(id).addEventListener('input', checkStartBtn);
+  });
+});
 
 function goToStage(n) {
   document.getElementById('stage-' + currentStage).classList.remove('active');
