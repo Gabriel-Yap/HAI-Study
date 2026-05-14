@@ -14,7 +14,11 @@ const SUPABASE_KEY = process.env.SUPABASE_KEY;
 
 app.use(cors({ origin: '*' }));
 app.use(express.json());
-app.use(express.static(__dirname)); // Serves hai_participant.html at http://localhost:3000
+app.use(express.static(__dirname));
+
+app.get('/', (req, res) => {
+  res.sendFile(__dirname + '/hai_participant.html');
+});
 
 app.post('/api/chat', async (req, res) => {
   try {
