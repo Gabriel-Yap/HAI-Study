@@ -329,6 +329,7 @@
   /* Compare view */
   .compare-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
   @media (max-width: 640px) { .compare-grid { grid-template-columns: 1fr; } }
+  @media (max-width: 700px) { #stage-1 .card > div[style*="grid"] { grid-template-columns: 1fr !important; } }
   .compare-col-label {
     font-size: 12px;
     font-weight: 600;
@@ -562,26 +563,21 @@
   <div class="step-divider"></div>
   <div class="step" data-stage="1">
     <div class="step-num">2</div>
-    <div class="step-label">Read Policy</div>
+    <div class="step-label">Read & Analyse</div>
   </div>
   <div class="step-divider"></div>
   <div class="step" data-stage="2">
     <div class="step-num">3</div>
-    <div class="step-label">Write Analysis</div>
+    <div class="step-label">AI Feedback</div>
   </div>
   <div class="step-divider"></div>
   <div class="step" data-stage="3">
     <div class="step-num">4</div>
-    <div class="step-label">AI Feedback</div>
+    <div class="step-label">Revise</div>
   </div>
   <div class="step-divider"></div>
   <div class="step" data-stage="4">
     <div class="step-num">5</div>
-    <div class="step-label">Revise</div>
-  </div>
-  <div class="step-divider"></div>
-  <div class="step" data-stage="5">
-    <div class="step-num">6</div>
     <div class="step-label">Done</div>
   </div>
 </div>
@@ -597,21 +593,16 @@
     <div class="intro-steps">
       <div class="intro-step-card">
         <div class="intro-step-num">1</div>
-        <h4>Read the Policy</h4>
-        <p>Review the selected university AI usage policy carefully.</p>
+        <h4>Read & Analyse</h4>
+        <p>Read the policy and write your analysis side by side — refer back anytime.</p>
       </div>
       <div class="intro-step-card">
         <div class="intro-step-num">2</div>
-        <h4>Write Your Analysis</h4>
-        <p>Write your own interpretation covering 5 structured dimensions.</p>
-      </div>
-      <div class="intro-step-card">
-        <div class="intro-step-num">3</div>
         <h4>Get AI Feedback</h4>
         <p>An AI assistant will review your analysis and suggest improvements.</p>
       </div>
       <div class="intro-step-card">
-        <div class="intro-step-num">4</div>
+        <div class="intro-step-num">3</div>
         <h4>Revise & Submit</h4>
         <p>Revise your analysis based on the feedback, then submit both versions.</p>
       </div>
@@ -668,66 +659,63 @@
     </div>
   </div>
 
-  <!-- Stage 1: Read Policy -->
+  <!-- Stage 1: Read & Analyse (combined) -->
   <div class="stage" id="stage-1">
     <div class="card">
-      <div class="card-title">University AI Usage Policy</div>
-      <div class="card-sub">Read this policy carefully before writing your analysis. You can refer back to it at any time.</div>
+      <div class="card-title">Read & Analyse</div>
+      <div class="card-sub">Read the policy on the left, then write your analysis on the right. You can refer back to the policy at any time.</div>
 
-      <div style="background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:1rem 1.25rem;margin-bottom:1rem;font-size:13px;color:var(--text2);line-height:1.65;">
-        <strong style="color:var(--text);display:block;margin-bottom:4px;">Policy Background</strong>
-        The following policy clauses are taken directly from the Yonsei University Guidelines for Students on the Use of Generative AI. These clauses are used in this study to explore how university students interpret and evaluate AI-related academic policies in higher education settings.
-      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.25rem;align-items:start;margin-bottom:1rem;">
 
-      <div class="policy-block">
-        <h3>Yonsei University — Guidelines for Students on the Use of Generative AI</h3>
-        <p><strong>Clause 2. Verify accuracy and reliability of AI outputs.</strong> Due to its inherent nature, generative AI may produce false or misleading information. It is essential to critically verify and fact-check its outputs.</p>
-        <p>● Understand the limitations and potential drawbacks of generative AI, and evaluate its outputs with a critical and questioning mindset.</p>
-        <p>● Always keep your learning objectives in mind. Emphasise self-directed learning and inquiry, and be mindful not to become overly dependent on AI tools.</p>
-        <p><strong>Clause 3. Act ethically and remain aware of potential biases in AI outputs.</strong> Although generative AI is designed to reject unethical prompts, indirect or rephrased questions may still lead to the generation of inappropriate or unethical content. Users should exercise caution, discretion, and a strong sense of responsibility.</p>
-        <p>● When AI is trained on biased or discriminatory data, it may produce skewed or harmful outputs that could inadvertently influence your academic work or research outcomes. Always remain vigilant and evaluate AI-generated content with critical scrutiny.</p>
-        <p><strong>Clause 5. Always provide proper citation when using generative AI tools.</strong> If students use generative AI in their academic work, they must provide clear and accurate citations. Submitting AI-generated content without proper attribution or using it without modification may be considered plagiarism or academic misconduct.</p>
-        <p>● Provide clear citations including the specific model used, the prompt entered, and the name of the platform.</p>
-        <p><em>Example (APA):</em> OpenAI. (Year). ChatGPT (Month Day version) [Large language model]. https://chat.openai.com</p>
-        <p><em>Example (MLA):</em> "Exact prompt you used" prompt. ChatGPT, Day Month version, OpenAI, Day Month Year, chat.openai.com.</p>
+        <!-- Left: Policy -->
+        <div>
+          <div class="compare-col-label label-original" style="margin-bottom:8px;">Policy</div>
+          <div style="background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:0.85rem 1rem;margin-bottom:0.75rem;font-size:12.5px;color:var(--text2);line-height:1.65;">
+            <strong style="color:var(--text);display:block;margin-bottom:3px;">Policy Background</strong>
+            The following policy clauses are taken directly from the Yonsei University Guidelines for Students on the Use of Generative AI, used in this study to explore how students interpret AI-related academic policies.
+          </div>
+          <div class="policy-block" style="margin-bottom:0;">
+            <h3>Yonsei University — Guidelines for Students on the Use of Generative AI</h3>
+            <p><strong>Clause 2. Verify accuracy and reliability of AI outputs.</strong> Due to its inherent nature, generative AI may produce false or misleading information. It is essential to critically verify and fact-check its outputs.</p>
+            <p>● Understand the limitations and potential drawbacks of generative AI, and evaluate its outputs with a critical and questioning mindset.</p>
+            <p>● Always keep your learning objectives in mind. Emphasise self-directed learning and inquiry, and be mindful not to become overly dependent on AI tools.</p>
+            <p><strong>Clause 3. Act ethically and remain aware of potential biases in AI outputs.</strong> Although generative AI is designed to reject unethical prompts, indirect or rephrased questions may still lead to the generation of inappropriate or unethical content. Users should exercise caution, discretion, and a strong sense of responsibility.</p>
+            <p>● When AI is trained on biased or discriminatory data, it may produce skewed or harmful outputs that could inadvertently influence your academic work or research outcomes. Always remain vigilant and evaluate AI-generated content with critical scrutiny.</p>
+            <p><strong>Clause 5. Always provide proper citation when using generative AI tools.</strong> If students use generative AI in their academic work, they must provide clear and accurate citations. Submitting AI-generated content without proper attribution or using it without modification may be considered plagiarism or academic misconduct.</p>
+            <p>● Provide clear citations including the specific model used, the prompt entered, and the name of the platform.</p>
+            <p><em>Example (APA):</em> OpenAI. (Year). ChatGPT (Month Day version) [Large language model]. https://chat.openai.com</p>
+            <p><em>Example (MLA):</em> "Exact prompt you used" prompt. ChatGPT, Day Month version, OpenAI, Day Month Year, chat.openai.com.</p>
+          </div>
+        </div>
+
+        <!-- Right: Analysis -->
+        <div>
+          <div class="compare-col-label label-revised" style="margin-bottom:8px;">Your Analysis</div>
+          <div class="prompt-guide">
+            <h4>Address these 5 dimensions:</h4>
+            <ol>
+              <li><strong>Behavioral Impact</strong> — How might this policy change how students work?</li>
+              <li><strong>Decision-Making</strong> — How does it affect decisions about using AI?</li>
+              <li><strong>Well-being</strong> — What emotional or psychological effects might it have?</li>
+              <li><strong>Benefits</strong> — What are the genuine benefits for students?</li>
+              <li><strong>Potential Drawbacks</strong> — What are realistic concerns or limitations?</li>
+            </ol>
+          </div>
+          <textarea id="originalAnalysis" placeholder="Write your analysis here. Consider all 5 dimensions above..." oninput="updateWC('originalAnalysis','wc1')" style="min-height:260px;"></textarea>
+          <div class="wc" id="wc1">0 words</div>
+        </div>
+
       </div>
 
       <div class="btn-row">
         <button class="btn btn-secondary" onclick="goToStage(0)">← Back</button>
-        <button class="btn btn-primary" onclick="goToStage(2)">I've read the policy →</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- Stage 2: Write Analysis -->
-  <div class="stage" id="stage-2">
-    <div class="card">
-      <div class="card-title">Write Your Analysis</div>
-      <div class="card-sub">Write your own analysis of the policy. Address all 5 dimensions below in your response. Aim for at least 200 words. Write from your perspective as a student — your lived experience matters.</div>
-
-      <div class="prompt-guide">
-        <h4>Address these 5 dimensions in your analysis:</h4>
-        <ol>
-          <li><strong>Behavioral Impact</strong> — How might this policy change how students work on assignments?</li>
-          <li><strong>Decision-Making</strong> — How does it affect decisions students make about using AI?</li>
-          <li><strong>Well-being</strong> — What emotional or psychological effects might this policy have?</li>
-          <li><strong>Benefits</strong> — What are the genuine benefits of this policy for students?</li>
-          <li><strong>Potential Drawbacks</strong> — What are realistic concerns or limitations of this policy?</li>
-        </ol>
-      </div>
-
-      <textarea id="originalAnalysis" placeholder="Write your analysis here. Consider all 5 dimensions above..." oninput="updateWC('originalAnalysis','wc1')"></textarea>
-      <div class="wc" id="wc1">0 words</div>
-
-      <div class="btn-row">
-        <button class="btn btn-secondary" onclick="goToStage(1)">← Back</button>
         <button class="btn btn-primary" id="submitAnalysisBtn" onclick="submitAnalysis()" disabled>Submit for AI Feedback →</button>
       </div>
     </div>
   </div>
 
-  <!-- Stage 3: AI Feedback Chat -->
-  <div class="stage" id="stage-3">
+  <!-- Stage 2: AI Feedback Chat -->
+  <div class="stage" id="stage-2">
     <div class="card">
       <div class="card-title">AI Feedback Session</div>
       <div class="card-sub">The AI assistant has reviewed your analysis. Read its feedback carefully, then ask follow-up questions if needed. When you feel ready, proceed to revise your analysis.</div>
@@ -750,14 +738,14 @@
       </div>
 
       <div class="btn-row" style="margin-top:1.25rem">
-        <button class="btn btn-secondary" onclick="goToStage(2)">← Back to Analysis</button>
-        <button class="btn btn-primary" onclick="goToStage(4)">Proceed to Revision →</button>
+        <button class="btn btn-secondary" onclick="goToStage(1)">← Back to Analysis</button>
+        <button class="btn btn-primary" onclick="goToStage(3)">Proceed to Revision →</button>
       </div>
     </div>
   </div>
 
-  <!-- Stage 4: Revise -->
-  <div class="stage" id="stage-4">
+  <!-- Stage 3: Revise -->
+  <div class="stage" id="stage-3">
     <div class="card">
       <div class="card-title">Revise Your Analysis</div>
       <div class="card-sub">Based on the AI feedback, revise your analysis. Your original version is shown on the left for reference. You do not have to accept every suggestion — revise in a way that reflects your own judgment.</div>
@@ -775,14 +763,14 @@
       </div>
 
       <div class="btn-row">
-        <button class="btn btn-secondary" onclick="goToStage(3)">← Back to Feedback</button>
+        <button class="btn btn-secondary" onclick="goToStage(2)">← Back to Feedback</button>
         <button class="btn btn-accent" onclick="submitFinal()">Submit Both Versions ✓</button>
       </div>
     </div>
   </div>
 
-  <!-- Stage 5: Done -->
-  <div class="stage" id="stage-5">
+  <!-- Stage 4: Done -->
+  <div class="stage" id="stage-4">
     <div class="card" style="text-align:center;padding:2.5rem 1.5rem;">
       <div class="success-icon">✓</div>
       <div class="success-title">Submission Complete</div>
@@ -878,10 +866,10 @@ function goToStage(n) {
   document.getElementById('stage-' + n).classList.add('active');
   window.scrollTo({ top: 0, behavior: 'smooth' });
 
-  if (n === 3 && chatHistory.length === 0) {
+  if (n === 2 && chatHistory.length === 0) {
     startFeedback();
   }
-  if (n === 4) {
+  if (n === 3) {
     document.getElementById('originalDisplay').textContent = document.getElementById('originalAnalysis').value;
     updateWC('revisedAnalysis', 'wc2');
   }
@@ -909,7 +897,7 @@ function submitAnalysis() {
   // Pre-populate revision draft so applied suggestions append cleanly
   document.getElementById('revisedAnalysis').value = text;
   updateWC('revisedAnalysis', 'wc2');
-  goToStage(3);
+  goToStage(2);
 }
 
 function addMessage(role, content) {
@@ -1096,7 +1084,7 @@ async function submitFinal() {
     AI feedback exchanges: ${chatTurns}<br>
     Timestamp: ${new Date().toLocaleString()}
   `;
-  goToStage(5);
+  goToStage(4);
 }
 </script>
 </body>
