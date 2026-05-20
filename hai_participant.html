@@ -583,6 +583,33 @@
   .diff-removed { background: #FADBD8; color: #7B241C; border-radius: 3px; padding: 1px 2px; text-decoration: line-through; opacity: 0.75; }
   .diff-legend { display: flex; gap: 14px; align-items: center; font-size: 11.5px; color: var(--text2); margin-bottom: 0.5rem; flex-wrap: wrap; }
 
+  /* Dimension colour highlights */
+  .dim-behavioral { background: #DBEAFE; color: #1E40AF; border-radius: 3px; padding: 1px 3px; }
+  .dim-decision   { background: #FEF9C3; color: #854D0E; border-radius: 3px; padding: 1px 3px; }
+  .dim-wellbeing  { background: #DCFCE7; color: #166534; border-radius: 3px; padding: 1px 3px; }
+  .dim-benefits   { background: #F3E8FF; color: #6B21A8; border-radius: 3px; padding: 1px 3px; }
+  .dim-drawbacks  { background: #FEE2E2; color: #991B1B; border-radius: 3px; padding: 1px 3px; }
+  .dim-highlight-view {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 0.9rem 1rem;
+    font-size: 13px;
+    line-height: 1.9;
+    max-height: 200px;
+    overflow-y: auto;
+    margin-bottom: 0.5rem;
+  }
+  .dim-legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+    margin-bottom: 0.5rem;
+    font-size: 11.5px;
+    font-weight: 600;
+  }
+  .dim-legend-pill { padding: 2px 9px; border-radius: 10px; }
+
   /* AI Suggestions panel */
   .suggestions-panel { background: var(--surface2); border: 1px solid var(--border); border-radius: 8px; padding: 0.9rem 1rem; margin-bottom: 0.9rem; }
   .suggestions-panel-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.6rem; }
@@ -773,7 +800,24 @@
         </div>
         <div>
           <div class="compare-col-label label-revised" style="margin-bottom:6px;">Your Revised Version — edit freely</div>
-          <textarea id="clauseRevisedInput" oninput="updateRevisedWC()" placeholder="AI revision will appear here..." style="display:none;min-height:180px;"></textarea>
+          <!-- Dimension colour legend -->
+          <div class="dim-legend" id="dimLegend" style="display:none;">
+            <span class="dim-legend-pill dim-behavioral">Behavioral Impact</span>
+            <span class="dim-legend-pill dim-decision">Decision-Making</span>
+            <span class="dim-legend-pill dim-wellbeing">Well-being</span>
+            <span class="dim-legend-pill dim-benefits">Benefits</span>
+            <span class="dim-legend-pill dim-drawbacks">Potential Drawbacks</span>
+          </div>
+          <!-- Colour-coded dimension view (read-only) -->
+          <div style="display:none;align-items:center;justify-content:space-between;margin-bottom:4px;" id="dimHighlightHeader">
+            <span style="font-size:11px;color:var(--text3);">Dimension coverage of your revision</span>
+            <button class="btn btn-secondary" onclick="refreshDimensionHighlights()" id="dimRefreshBtn"
+              style="padding:2px 10px;font-size:11px;height:auto;">Refresh Highlights</button>
+          </div>
+          <div class="dim-highlight-view" id="dimHighlightView" style="display:none;"></div>
+          <div style="font-size:11px;color:var(--text3);margin-bottom:4px;display:none;" id="dimHighlightLoading">Analysing dimensions…</div>
+          <!-- Editable textarea -->
+          <textarea id="clauseRevisedInput" oninput="updateRevisedWC()" placeholder="AI revision will appear here..." style="display:none;min-height:140px;"></textarea>
           <div class="wc" id="revisedWC" style="display:none;margin-top:4px;">0 words</div>
         </div>
       </div>
@@ -871,10 +915,11 @@ const CLAUSE_READ_CONTENT = [
       <p>• Understand the limitations and potential drawbacks of generative AI, and evaluate its outputs with a critical and questioning mindset.</p>
       <p>• Always keep your learning objectives in mind. Emphasise self-directed learning and inquiry, and be mindful not to become overly dependent on AI tools.</p>`,
     dimensions: [
-      'What specific risks does this clause address regarding AI accuracy?',
-      'How should students practically verify AI outputs in their academic work?',
-      'What does "over-dependence" on AI mean, and how can it be avoided?',
-      'Do you think this clause is clear and practical for students to follow?'
+      'Behavioral Impact — How does this clause affect your behaviour or habits when using AI?',
+      'Decision-Making — How does this clause influence your decisions about using AI in academic work?',
+      'Well-being — What implications does this clause have for your academic well-being or stress?',
+      'Benefits — What are the key benefits of following this clause?',
+      'Potential Drawbacks — What challenges might arise when trying to follow this clause?'
     ]
   },
   {
@@ -882,10 +927,11 @@ const CLAUSE_READ_CONTENT = [
       <p>Although generative AI is designed to reject unethical prompts, indirect or rephrased questions may still lead to the generation of inappropriate or unethical content. Users should exercise caution, discretion, and a strong sense of responsibility.</p>
       <p>• When AI is trained on biased or discriminatory data, it may produce skewed or harmful outputs that could inadvertently influence your academic work or research outcomes. Always remain vigilant and evaluate AI-generated content with critical scrutiny.</p>`,
     dimensions: [
-      'What ethical responsibilities does this clause place on students?',
-      'How might AI bias affect academic work or research outcomes?',
-      'What does "critical scrutiny" mean when evaluating AI-generated content?',
-      'Is this clause specific enough in its guidance? What could be improved?'
+      'Behavioral Impact — How does this clause affect your behaviour or habits when using AI?',
+      'Decision-Making — How does this clause influence your decisions about using AI in academic work?',
+      'Well-being — What implications does this clause have for your academic well-being or stress?',
+      'Benefits — What are the key benefits of following this clause?',
+      'Potential Drawbacks — What challenges might arise when trying to follow this clause?'
     ]
   },
   {
@@ -895,10 +941,11 @@ const CLAUSE_READ_CONTENT = [
       <p><em>Example (APA):</em> OpenAI. (Year). ChatGPT (Month Day version) [Large language model]. https://chat.openai.com</p>
       <p><em>Example (MLA):</em> "Exact prompt you used" prompt. ChatGPT, Day Month version, OpenAI, Day Month Year, chat.openai.com.</p>`,
     dimensions: [
-      'Why is it important to cite AI tools in academic work?',
-      'What specific information must be included in an AI citation according to this clause?',
-      'Do you think the citation examples given are practical for students to use?',
-      'How does this clause relate to academic integrity and plagiarism?'
+      'Behavioral Impact — How does this clause affect your behaviour or habits when using AI?',
+      'Decision-Making — How does this clause influence your decisions about using AI in academic work?',
+      'Well-being — What implications does this clause have for your academic well-being or stress?',
+      'Benefits — What are the key benefits of following this clause?',
+      'Potential Drawbacks — What challenges might arise when trying to follow this clause?'
     ]
   }
 ];
@@ -912,8 +959,17 @@ let aiRevisionInputs  = ['', '', ''];  // which analysis text each revision was 
 let clauseDecisions   = [];
 let clauseChatHistories = [[], [], []]; // chat history per clause
 let currentSuggestions  = [];           // current suggestions list (indexed by Add buttons)
+let clauseDimAnnotations = [null, null, null]; // dimension annotations per clause
 let isProcessing = false;
 let isChatting   = false;
+
+const DIMENSION_MAP = {
+  'Behavioral Impact': 'dim-behavioral',
+  'Decision-Making':   'dim-decision',
+  'Well-being':        'dim-wellbeing',
+  'Benefits':          'dim-benefits',
+  'Potential Drawbacks': 'dim-drawbacks'
+};
 
 // ── Stage 0: Welcome ─────────────────────────────────────────────────────────
 function checkStartBtn() {
@@ -1011,14 +1067,18 @@ function loadReviseClause(index) {
   document.getElementById('clauseTitle').textContent = 'AI Feedback — ' + CLAUSES[index].label;
 
   // Reset all panels to loading state
-  document.getElementById('clauseRevisedLoading').style.display = 'flex';
-  document.getElementById('clauseDiffView').style.display       = 'none';
-  document.getElementById('diffLegend').style.display           = 'none';
-  document.getElementById('clauseRevisedInput').style.display   = 'none';
-  document.getElementById('revisedWC').style.display            = 'none';
-  document.getElementById('clauseActions').style.display        = 'none';
-  document.getElementById('suggestionsPanel').style.display     = 'none';
-  document.getElementById('reviseChatPanel').style.display      = 'none';
+  document.getElementById('clauseRevisedLoading').style.display  = 'flex';
+  document.getElementById('clauseDiffView').style.display        = 'none';
+  document.getElementById('diffLegend').style.display            = 'none';
+  document.getElementById('clauseRevisedInput').style.display    = 'none';
+  document.getElementById('revisedWC').style.display             = 'none';
+  document.getElementById('clauseActions').style.display         = 'none';
+  document.getElementById('suggestionsPanel').style.display      = 'none';
+  document.getElementById('reviseChatPanel').style.display       = 'none';
+  document.getElementById('dimLegend').style.display             = 'none';
+  document.getElementById('dimHighlightHeader').style.display    = 'none';
+  document.getElementById('dimHighlightView').style.display      = 'none';
+  document.getElementById('dimHighlightLoading').style.display   = 'none';
 
   renderChatHistory(index);
 
@@ -1026,6 +1086,7 @@ function loadReviseClause(index) {
   if (aiRevisions[index] && aiRevisionInputs[index] === originalText) {
     showReviseView(index, originalText);
   } else {
+    clauseDimAnnotations[index] = null; // clear stale highlights
     processClauseWithAI(index, originalText);
   }
 }
@@ -1049,11 +1110,18 @@ function showReviseView(index, originalText) {
   document.getElementById('clauseActions').style.display    = 'flex';
   document.getElementById('suggestionsPanel').style.display = 'block';
   document.getElementById('reviseChatPanel').style.display  = 'block';
+  document.getElementById('dimLegend').style.display        = 'flex';
 
-  // Fetch suggestions if stale
+  // Fetch suggestions and dimension highlights if stale
   const list = document.getElementById('suggestionsList');
-  if (list.dataset.forClause != index || aiRevisionInputs[index] !== originalText) {
-    fetchSuggestions(index, originalText, revised);
+  const stale = list.dataset.forClause != index || aiRevisionInputs[index] !== originalText;
+  if (stale) fetchSuggestions(index, originalText, revised);
+
+  // Use cached dimension annotations or fetch fresh ones
+  if (clauseDimAnnotations[index] && !stale) {
+    renderDimensionHighlights(clauseDimAnnotations[index]);
+  } else {
+    fetchDimensionHighlights(index, revised);
   }
 }
 
@@ -1147,6 +1215,58 @@ function updateRevisedWC() {
   const val   = document.getElementById('clauseRevisedInput').value;
   const count = val.trim() ? val.trim().split(/\s+/).length : 0;
   document.getElementById('revisedWC').textContent = count + ' word' + (count !== 1 ? 's' : '');
+}
+
+// ── Dimension highlights ──────────────────────────────────────────────────────
+async function fetchDimensionHighlights(index, text) {
+  document.getElementById('dimHighlightView').style.display    = 'none';
+  document.getElementById('dimHighlightLoading').style.display = 'block';
+
+  const userMsg = `Tag each sentence in the text below with one of these dimensions: "Behavioral Impact", "Decision-Making", "Well-being", "Benefits", "Potential Drawbacks", or "Other".\n\nText:\n${text}\n\nReturn ONLY a JSON array in this exact format, no other text:\n[{"text":"sentence","dimension":"dimension name"},...]`;
+  try {
+    const res  = await fetch('/api/chat', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        system: 'You are a text classifier. Return ONLY a valid JSON array with no markdown, no explanation. Each object must have "text" and "dimension" keys.',
+        messages: [{ role: 'user', content: userMsg }],
+        max_tokens: 1200
+      })
+    });
+    const data = await res.json();
+    const raw  = data.content?.[0]?.text?.trim() || '[]';
+    const jsonMatch = raw.match(/\[[\s\S]*\]/);
+    const annotations = jsonMatch ? JSON.parse(jsonMatch[0]) : [];
+    clauseDimAnnotations[index] = annotations;
+    renderDimensionHighlights(annotations);
+  } catch {
+    document.getElementById('dimHighlightLoading').style.display = 'none';
+  }
+}
+
+function renderDimensionHighlights(annotations) {
+  document.getElementById('dimHighlightLoading').style.display = 'none';
+  const view   = document.getElementById('dimHighlightView');
+  const header = document.getElementById('dimHighlightHeader');
+  if (!annotations || !annotations.length) {
+    view.style.display   = 'none';
+    header.style.display = 'none';
+    return;
+  }
+  view.innerHTML = annotations.map(({text, dimension}) => {
+    const cls = DIMENSION_MAP[dimension];
+    const e   = (text || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+    return cls ? `<span class="${cls}">${e}</span> ` : `<span>${e}</span> `;
+  }).join('');
+  view.style.display   = 'block';
+  header.style.display = 'flex';
+}
+
+function refreshDimensionHighlights() {
+  const text = document.getElementById('clauseRevisedInput').value.trim();
+  if (!text) return;
+  clauseDimAnnotations[currentClauseIndex] = null;
+  fetchDimensionHighlights(currentClauseIndex, text);
 }
 
 // ── Revise-stage chat ─────────────────────────────────────────────────────────
