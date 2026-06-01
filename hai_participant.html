@@ -464,6 +464,20 @@
   /* Separator */
   .sep { border: none; border-top: 1px solid var(--border); margin: 1.5rem 0; }
 
+  /* Survey */
+  .survey-section-title { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text3); margin: 1.5rem 0 0.75rem; padding-bottom: 6px; border-bottom: 1px solid var(--border); }
+  .survey-q { margin-bottom: 1.25rem; }
+  .survey-q-label { font-size: 14px; color: var(--text); line-height: 1.55; margin-bottom: 0.6rem; }
+  .likert-wrap { display: flex; flex-direction: column; align-items: center; width: 100%; }
+  .likert-scale { display: flex; gap: 10px; align-items: center; justify-content: center; }
+  .likert-opt input[type="radio"] { display: none; }
+  .likert-opt label { width: 38px; height: 38px; border-radius: 50%; border: 1.5px solid var(--border2); display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 600; color: var(--text2); cursor: pointer; transition: all 0.15s; user-select: none; }
+  .likert-opt input[type="radio"]:checked + label { background: var(--text); border-color: var(--text); color: #fff; }
+  .likert-end-labels { display: flex; justify-content: space-between; width: 100%; font-size: 11px; color: var(--text3); margin-top: 4px; }
+  .radio-group { display: flex; flex-direction: column; gap: 6px; margin-top: 0.5rem; }
+  .radio-opt { display: flex; align-items: center; gap: 8px; font-size: 13.5px; color: var(--text); cursor: pointer; }
+  .radio-opt input[type="radio"] { accent-color: var(--text); width: 15px; height: 15px; cursor: pointer; }
+
   /* Scrollbar */
   .chat-messages::-webkit-scrollbar { width: 4px; }
   .chat-messages::-webkit-scrollbar-track { background: transparent; }
@@ -663,6 +677,11 @@
   <div class="step-divider"></div>
   <div class="step">
     <div class="step-num">6</div>
+    <div class="step-label">Survey</div>
+  </div>
+  <div class="step-divider"></div>
+  <div class="step">
+    <div class="step-num">7</div>
     <div class="step-label">Done</div>
   </div>
 </div>
@@ -861,17 +880,132 @@
       <div id="finalReviewContent"></div>
       <div class="btn-row" style="margin-top:1.5rem;justify-content:space-between;">
         <button class="btn btn-secondary" onclick="goBackToLastClause()">← Go Back &amp; Edit</button>
-        <button class="btn btn-accent" id="finalSubmitBtn" onclick="submitFinal()">Submit Final Version →</button>
+        <button class="btn btn-accent" id="finalSubmitBtn" onclick="submitFinal()">Submit &amp; Continue to Survey →</button>
       </div>
     </div>
   </div>
 
-  <!-- Stage 4: Done -->
+  <!-- Stage 4: Post-Study Survey -->
   <div class="stage" id="stage-4">
+    <div class="card">
+      <div class="card-title">Post-Study Evaluation — System B</div>
+      <div class="card-sub">Please complete this short survey about your experience. All responses are anonymous and used only for research purposes.</div>
+
+      <div class="survey-section-title">Section 1 — Demographics</div>
+
+      <div class="survey-q">
+        <div class="survey-q-label">Participant Name</div>
+        <input type="text" id="surveyName" placeholder="Your full name"
+          style="width:100%;padding:8px 12px;border:1px solid var(--border);border-radius:8px;font-family:var(--font-sans);font-size:14px;color:var(--text);background:var(--surface);outline:none;transition:border-color 0.2s;"
+          onfocus="this.style.borderColor='var(--accent)'" onblur="this.style.borderColor='var(--border)'">
+      </div>
+
+      <div class="survey-q">
+        <div class="survey-q-label">How frequently do you use LLMs (like ChatGPT, Claude, Gemini) in your daily university workflow?</div>
+        <div class="radio-group">
+          <label class="radio-opt"><input type="radio" name="llmFreq" value="Never"> Never</label>
+          <label class="radio-opt"><input type="radio" name="llmFreq" value="Rarely"> Rarely</label>
+          <label class="radio-opt"><input type="radio" name="llmFreq" value="Weekly"> Weekly</label>
+          <label class="radio-opt"><input type="radio" name="llmFreq" value="Daily"> Daily</label>
+        </div>
+      </div>
+
+      <div class="survey-q">
+        <div class="survey-q-label">What is your general attitude toward current university policies regarding student life and academic integrity?</div>
+        <div class="likert-wrap">
+          <div class="likert-scale">
+            <div class="likert-opt"><input type="radio" name="surveyPolicyAttitude" id="spa-1" value="1"><label for="spa-1">1</label></div>
+            <div class="likert-opt"><input type="radio" name="surveyPolicyAttitude" id="spa-2" value="2"><label for="spa-2">2</label></div>
+            <div class="likert-opt"><input type="radio" name="surveyPolicyAttitude" id="spa-3" value="3"><label for="spa-3">3</label></div>
+            <div class="likert-opt"><input type="radio" name="surveyPolicyAttitude" id="spa-4" value="4"><label for="spa-4">4</label></div>
+            <div class="likert-opt"><input type="radio" name="surveyPolicyAttitude" id="spa-5" value="5"><label for="spa-5">5</label></div>
+          </div>
+          <div class="likert-end-labels"><span>1 — Very Dissatisfied</span><span>5 — Very Satisfied</span></div>
+        </div>
+      </div>
+
+      <div class="survey-section-title">Section 2 — Core System Experience</div>
+
+      <div class="survey-q">
+        <div class="survey-q-label">The structured feedback system helped me identify missing perspectives or gaps in my initial policy analysis.</div>
+        <div class="likert-wrap">
+          <div class="likert-scale">
+            <div class="likert-opt"><input type="radio" name="sysQ1" id="sq1-1" value="1"><label for="sq1-1">1</label></div>
+            <div class="likert-opt"><input type="radio" name="sysQ1" id="sq1-2" value="2"><label for="sq1-2">2</label></div>
+            <div class="likert-opt"><input type="radio" name="sysQ1" id="sq1-3" value="3"><label for="sq1-3">3</label></div>
+            <div class="likert-opt"><input type="radio" name="sysQ1" id="sq1-4" value="4"><label for="sq1-4">4</label></div>
+            <div class="likert-opt"><input type="radio" name="sysQ1" id="sq1-5" value="5"><label for="sq1-5">5</label></div>
+          </div>
+          <div class="likert-end-labels"><span>1 — Strongly Disagree</span><span>5 — Strongly Agree</span></div>
+        </div>
+      </div>
+
+      <div class="survey-q">
+        <div class="survey-q-label">The structured feedback system challenged me to think more critically about how the policy impacts student well-being and stress.</div>
+        <div class="likert-wrap">
+          <div class="likert-scale">
+            <div class="likert-opt"><input type="radio" name="sysQ2" id="sq2-1" value="1"><label for="sq2-1">1</label></div>
+            <div class="likert-opt"><input type="radio" name="sysQ2" id="sq2-2" value="2"><label for="sq2-2">2</label></div>
+            <div class="likert-opt"><input type="radio" name="sysQ2" id="sq2-3" value="3"><label for="sq2-3">3</label></div>
+            <div class="likert-opt"><input type="radio" name="sysQ2" id="sq2-4" value="4"><label for="sq2-4">4</label></div>
+            <div class="likert-opt"><input type="radio" name="sysQ2" id="sq2-5" value="5"><label for="sq2-5">5</label></div>
+          </div>
+          <div class="likert-end-labels"><span>1 — Strongly Disagree</span><span>5 — Strongly Agree</span></div>
+        </div>
+      </div>
+
+      <div class="survey-q">
+        <div class="survey-q-label">I felt like the structured feedback system did most of the writing and phrasing for me, rather than making me do the critical thinking.</div>
+        <div class="likert-wrap">
+          <div class="likert-scale">
+            <div class="likert-opt"><input type="radio" name="sysQ3" id="sq3-1" value="1"><label for="sq3-1">1</label></div>
+            <div class="likert-opt"><input type="radio" name="sysQ3" id="sq3-2" value="2"><label for="sq3-2">2</label></div>
+            <div class="likert-opt"><input type="radio" name="sysQ3" id="sq3-3" value="3"><label for="sq3-3">3</label></div>
+            <div class="likert-opt"><input type="radio" name="sysQ3" id="sq3-4" value="4"><label for="sq3-4">4</label></div>
+            <div class="likert-opt"><input type="radio" name="sysQ3" id="sq3-5" value="5"><label for="sq3-5">5</label></div>
+          </div>
+          <div class="likert-end-labels"><span>1 — Strongly Disagree</span><span>5 — Strongly Agree</span></div>
+        </div>
+      </div>
+
+      <div class="survey-q">
+        <div class="survey-q-label">The feedback and suggestions I received from the structured feedback system were highly actionable and easy to apply.</div>
+        <div class="likert-wrap">
+          <div class="likert-scale">
+            <div class="likert-opt"><input type="radio" name="sysQ4" id="sq4-1" value="1"><label for="sq4-1">1</label></div>
+            <div class="likert-opt"><input type="radio" name="sysQ4" id="sq4-2" value="2"><label for="sq4-2">2</label></div>
+            <div class="likert-opt"><input type="radio" name="sysQ4" id="sq4-3" value="3"><label for="sq4-3">3</label></div>
+            <div class="likert-opt"><input type="radio" name="sysQ4" id="sq4-4" value="4"><label for="sq4-4">4</label></div>
+            <div class="likert-opt"><input type="radio" name="sysQ4" id="sq4-5" value="5"><label for="sq4-5">5</label></div>
+          </div>
+          <div class="likert-end-labels"><span>1 — Strongly Disagree</span><span>5 — Strongly Agree</span></div>
+        </div>
+      </div>
+
+      <div class="survey-section-title">Section 3 — Structured Feedback Experience</div>
+
+      <div class="survey-q">
+        <div class="survey-q-label">How helpful was the specific breakdown of the criteria (e.g., clarity, completeness, quality criteria) provided by our system?</div>
+        <textarea id="criteriaHelpfulness" placeholder="Share your thoughts..." style="min-height:120px;"></textarea>
+      </div>
+
+      <div class="survey-q">
+        <div class="survey-q-label">Did the structured nature of the system's feedback feel too restrictive, or did it successfully push you to evaluate the policy more thoroughly? Please explain.</div>
+        <textarea id="structuredRestrictive" placeholder="Share your thoughts..." style="min-height:120px;"></textarea>
+      </div>
+
+      <div class="btn-row">
+        <button class="btn btn-accent" id="surveySubmitBtn" onclick="submitSurvey()">Submit Survey →</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Stage 5: Done -->
+  <div class="stage" id="stage-5">
     <div class="card" style="text-align:center;padding:2.5rem 1.5rem;">
       <div class="success-icon">✓</div>
       <div class="success-title">Submission Complete</div>
-      <div class="success-sub">Thank you for participating in the Goal Diggers HAI Study. Both versions of your analysis have been recorded and anonymized.</div>
+      <div class="success-sub">Thank you for completing the Goal Diggers HAI Study. Your analysis and survey responses have been recorded and anonymized.</div>
       <hr class="sep">
       <p style="font-size:14px;color:var(--text2);margin-bottom:1.5rem;">Your responses will be evaluated by other student participants in a blind study. Results will be used to compare the quality of human-only vs. AI-assisted policy analysis.</p>
       <div id="submissionSummary" style="background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:1rem 1.25rem;text-align:left;font-size:13px;color:var(--text2);margin-bottom:1.5rem;"></div>
@@ -992,6 +1126,7 @@ document.addEventListener('DOMContentLoaded', () => {
 function updateProgressBar() {
   let activeStep;
   if (currentStage === 0) activeStep = 0;
+  else if (currentStage === 5) activeStep = 6;
   else if (currentStage === 4) activeStep = 5;
   else if (currentStage === 3) activeStep = 4;
   else activeStep = 1 + currentClauseIndex; // stages 1 & 2 → steps 1–3
@@ -1478,7 +1613,56 @@ async function submitFinal() {
     Chat messages sent: ${totalChatTurns}<br>
     Timestamp: ${new Date().toLocaleString()}
   `;
-  goToStage(4);
+  goToStage(4); // go to survey
+}
+
+// ── Stage 4: Survey ───────────────────────────────────────────────────────────
+async function submitSurvey() {
+  const name          = document.getElementById('surveyName').value.trim();
+  const llmFreq       = document.querySelector('input[name="llmFreq"]:checked')?.value;
+  const policyRating  = document.querySelector('input[name="surveyPolicyAttitude"]:checked')?.value;
+  const sysQ1         = document.querySelector('input[name="sysQ1"]:checked')?.value;
+  const sysQ2         = document.querySelector('input[name="sysQ2"]:checked')?.value;
+  const sysQ3         = document.querySelector('input[name="sysQ3"]:checked')?.value;
+  const sysQ4         = document.querySelector('input[name="sysQ4"]:checked')?.value;
+  const criteriaHelp  = document.getElementById('criteriaHelpfulness').value.trim();
+  const structuredExp = document.getElementById('structuredRestrictive').value.trim();
+
+  if (!name || !llmFreq || !policyRating || !sysQ1 || !sysQ2 || !sysQ3 || !sysQ4) {
+    alert('Please answer all required questions in Sections 1 and 2 before submitting.');
+    return;
+  }
+
+  const btn = document.getElementById('surveySubmitBtn');
+  btn.disabled    = true;
+  btn.textContent = 'Submitting…';
+
+  try {
+    const res = await fetch('/api/submit', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        submission_type:                'survey_b',
+        participant_name:               name,
+        llm_frequency:                  llmFreq,
+        policy_attitude_rating:         parseInt(policyRating),
+        sys_helped_identify_gaps:       parseInt(sysQ1),
+        sys_challenged_critical:        parseInt(sysQ2),
+        sys_did_writing_for_me:         parseInt(sysQ3),
+        sys_feedback_actionable:        parseInt(sysQ4),
+        criteria_helpfulness:           criteriaHelp,
+        structured_feedback_experience: structuredExp
+      })
+    });
+    if (!res.ok) throw new Error('Server error');
+  } catch {
+    btn.disabled    = false;
+    btn.textContent = 'Submit Survey →';
+    alert('Failed to save survey. Please check your connection and try again.');
+    return;
+  }
+
+  goToStage(5); // go to done
 }
 </script>
 </body>
