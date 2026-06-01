@@ -90,7 +90,11 @@ app.post('/api/submit', async (req, res) => {
   }
 });
 
-app.listen(PORT, () => {
-  console.log(`Server running at http://localhost:${PORT}`);
-  console.log(`Open http://localhost:${PORT}/hai_participant.html in your browser`);
-});
+if (require.main === module) {
+  app.listen(PORT, () => {
+    console.log(`Server running at http://localhost:${PORT}`);
+    console.log(`Open http://localhost:${PORT}/hai_participant.html in your browser`);
+  });
+}
+
+module.exports = app;
