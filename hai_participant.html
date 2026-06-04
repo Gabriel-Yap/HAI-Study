@@ -994,6 +994,11 @@
         <textarea id="structuredRestrictive" placeholder="Share your thoughts..." style="min-height:120px;"></textarea>
       </div>
 
+      <div class="survey-q">
+        <div class="survey-q-label">Which AI features did you use during the revision stage (e.g. reading the AI's rewrite, applying suggestions, chatting with the AI), and how did they influence your final analysis?</div>
+        <textarea id="aiFeatureUsage" placeholder="Share your thoughts..." style="min-height:120px;"></textarea>
+      </div>
+
       <div class="btn-row">
         <button class="btn btn-accent" id="surveySubmitBtn" onclick="submitSurvey()">Submit Survey →</button>
       </div>
@@ -1627,6 +1632,7 @@ async function submitSurvey() {
   const sysQ4         = document.querySelector('input[name="sysQ4"]:checked')?.value;
   const criteriaHelp  = document.getElementById('criteriaHelpfulness').value.trim();
   const structuredExp = document.getElementById('structuredRestrictive').value.trim();
+  const aiFeatureUsage = document.getElementById('aiFeatureUsage').value.trim();
 
   if (!name || !llmFreq || !policyRating || !sysQ1 || !sysQ2 || !sysQ3 || !sysQ4) {
     alert('Please answer all required questions in Sections 1 and 2 before submitting.');
@@ -1651,7 +1657,8 @@ async function submitSurvey() {
         sys_did_writing_for_me:         parseInt(sysQ3),
         sys_feedback_actionable:        parseInt(sysQ4),
         criteria_helpfulness:           criteriaHelp,
-        structured_feedback_experience: structuredExp
+        structured_feedback_experience: structuredExp,
+        ai_feature_usage:               aiFeatureUsage
       })
     });
     if (!res.ok) throw new Error('Server error');
