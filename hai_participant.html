@@ -1318,9 +1318,15 @@ async function fetchSuggestions(index, original, revised) {
 }
 
 function parseSuggestionsFromText(text) {
+  const metaTrail = /\s+(These |You can |Let me know|Feel free|I hope|Additionally,? if|Note:|Here are|Please |The above|If you )[^]*/i;
   return text.split(/\n(?=\d+\.)/)
-    .map(p => { const m = p.match(/^\d+\.\s*([\s\S]+)/); return m ? m[1].trim().replace(/\n+/g, ' ') : null; })
-    .filter(Boolean);
+    .map(p => {
+      const m = p.match(/^\d+\.\s*([\s\S]+?)(?:\n\n|$)/);
+      if (!m) return null;
+      return m[1].trim().replace(/\n+/g, ' ').replace(metaTrail, '').trim() || null;
+    })
+    .filter(Boolean)
+    .slice(0, 4);
 }
 
 function renderSuggestions(suggestions) {
