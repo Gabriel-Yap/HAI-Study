@@ -836,7 +836,7 @@
           <div class="dim-highlight-view" id="dimHighlightView" style="display:none;"></div>
           <div style="font-size:11px;color:var(--text3);margin-bottom:4px;display:none;" id="dimHighlightLoading">Analysing dimensions…</div>
           <!-- Editable textarea -->
-          <textarea id="clauseRevisedInput" oninput="updateRevisedWC()" placeholder="AI revision will appear here..." style="display:none;min-height:140px;"></textarea>
+          <textarea id="clauseRevisedInput" oninput="updateRevisedWC()" onblur="lastCursorPos=this.selectionStart" placeholder="AI revision will appear here..." style="display:none;min-height:140px;"></textarea>
           <div class="wc" id="revisedWC" style="display:none;margin-top:4px;">0 words</div>
         </div>
       </div>
@@ -1101,6 +1101,7 @@ let currentSuggestions  = [];           // current suggestions list (indexed by 
 let clauseDimAnnotations = [null, null, null]; // dimension annotations per clause
 let isProcessing = false;
 let isChatting   = false;
+let lastCursorPos = null; // saved cursor position in clauseRevisedInput
 
 const DIMENSION_MAP = {
   'Behavioral Impact': 'dim-behavioral',
@@ -1348,16 +1349,15 @@ function applySuggestion(btn, index) {
   if (text === undefined) return;
   const ta = document.getElementById('clauseRevisedInput');
 
-  if (document.activeElement === ta) {
-    const start  = ta.selectionStart;
-    const end    = ta.selectionEnd;
+  if (lastCursorPos !== null) {
+    const start  = lastCursorPos;
     const before = ta.value.slice(0, start);
-    const after  = ta.value.slice(end);
+    const after  = ta.value.slice(start);
     const sep    = before && !before.endsWith(' ') && !before.endsWith('\n') ? ' ' : '';
     const insert = sep + text;
     ta.value     = before + insert + after;
-    const newPos = start + insert.length;
-    ta.setSelectionRange(newPos, newPos);
+    lastCursorPos = start + insert.length;
+    ta.setSelectionRange(lastCursorPos, lastCursorPos);
   } else {
     const sep = ta.value.trimEnd() ? '\n\n' : '';
     ta.value  = ta.value.trimEnd() + sep + text;
