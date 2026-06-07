@@ -1346,15 +1346,29 @@ function renderSuggestions(suggestions) {
 function applySuggestion(btn, index) {
   const text = currentSuggestions[index];
   if (text === undefined) return;
-  const ta  = document.getElementById('clauseRevisedInput');
-  const sep = ta.value.trimEnd() ? '\n\n' : '';
-  ta.value  = ta.value.trimEnd() + sep + text;
+  const ta = document.getElementById('clauseRevisedInput');
+
+  if (document.activeElement === ta) {
+    const start  = ta.selectionStart;
+    const end    = ta.selectionEnd;
+    const before = ta.value.slice(0, start);
+    const after  = ta.value.slice(end);
+    const sep    = before && !before.endsWith(' ') && !before.endsWith('\n') ? ' ' : '';
+    const insert = sep + text;
+    ta.value     = before + insert + after;
+    const newPos = start + insert.length;
+    ta.setSelectionRange(newPos, newPos);
+  } else {
+    const sep = ta.value.trimEnd() ? '\n\n' : '';
+    ta.value  = ta.value.trimEnd() + sep + text;
+    ta.scrollTop = ta.scrollHeight;
+  }
+
   updateRevisedWC();
   btn.textContent = 'Added ✓';
   btn.disabled    = true;
   btn.closest('.suggestion-card').classList.add('suggestion-applied');
   ta.focus();
-  ta.scrollTop = ta.scrollHeight;
 }
 
 function updateRevisedWC() {
